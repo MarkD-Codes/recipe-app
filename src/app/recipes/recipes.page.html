@@ -4,10 +4,14 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Recipes</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="false">
+  <p>Recipes for ingredients: {{ ingredients }}</p>
+  <br>
+  <ion-card *ngFor="let recipe of recipes">
+    <img src="{{ recipe.image }}" />
+    <ion-card-header>
+      <ion-card-title>{{ recipe.title }}</ion-card-title>
+    </ion-card-header>
+    <ion-button fill="clear">Details</ion-button>
+  </ion-card>
 </ion-content>
