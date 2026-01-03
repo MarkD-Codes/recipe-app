@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle } from '@ionic/angular/standalone';
 import { HttpOptions } from '@capacitor/core';
 import { MyHttp } from '../services/my-http';
 import { MyData } from '../services/my-data';
@@ -11,16 +11,21 @@ import { MyData } from '../services/my-data';
   templateUrl: './recipe-details.page.html',
   styleUrls: ['./recipe-details.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule],
+  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle],
 })
 export class RecipeDetailsPage implements OnInit {
 
   detailsBaseUrl: string = "https://api.spoonacular.com/recipes/";
   apiKey: string = '70759a4f7911402abcc53d3c51d3b759';
+  recipeData!: any;
+  recipeIngredients!: any[];
+  recipeSteps!: any[];
+  metric: boolean = true; // true = metric, false = imperial
 
   constructor(private MyHttp: MyHttp, private MyData: MyData) { }
 
   ngOnInit() {
+    this.loadRecipeDetails();
   }
 
   async getRecipeIDNumber(){
@@ -32,6 +37,23 @@ export class RecipeDetailsPage implements OnInit {
       const url = this.detailsBaseUrl + id + '/information?apiKey=' + this.apiKey;
       const options: HttpOptions = { url };
       let recipeDetails = await this.MyHttp.get(options);
+      this.metric = await this.checkUnitPreference();
+      this.recipeData = recipeDetails.data;
+      this.recipeIngredients = this.recipeData.extendedIngredients;
+      this.recipeSteps = this.recipeData.analyzedInstructions[0]?.steps || [];
     }
 
-}
+    async loadRecipeDetails() {
+      let id = await this.getRecipeIDNumber();
+      await this.getRecipeDetails(id);
+    }
+
+    async checkUnitPreference(){
+      const pref: string = await this.MyData.get('unit-preferences');
+      if (pref === 'imperial'){
+        return false;
+      } else {
+        return true;
+      }
+    }
+  }

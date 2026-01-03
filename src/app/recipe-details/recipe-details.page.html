@@ -5,9 +5,33 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
+  <ion-card>
     <ion-toolbar>
       <ion-title size="large">RecipeDetails</ion-title>
     </ion-toolbar>
-  </ion-header>
+  </ion-card>
+
+<ng-container *ngIf="recipeData">
+<ion-card>
+  <ion-card-header>
+    <img src={{recipeData.image}} style="width: 50vw; height: auto;"/>
+    <ion-card-title>{{recipeData.title}}</ion-card-title>
+    <ion-card-subtitle>Ready in {{recipeData.readyInMinutes}} minutes</ion-card-subtitle>
+  </ion-card-header>
+  <ion-card-content>
+    <h4>Ingredients List:</h4>
+    <ion-card *ngFor="let ingredient of recipeIngredients">
+      {{ingredient.originalName}}:
+      {{ metric ? ingredient.measures.metric.amount + ' ' + ingredient.measures.metric.unitShort : ingredient.measures.us.amount + ' ' + ingredient.measures.us.unitShort }}
+    </ion-card>
+  </ion-card-content>
+
+  <ion-card-content>
+    <h4>Method:</h4>
+    <ion-card *ngFor="let step of recipeSteps">
+      {{step.step}}
+    </ion-card>
+  </ion-card-content>
+</ion-card>
+</ng-container>
 </ion-content>
