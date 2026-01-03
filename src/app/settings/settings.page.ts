@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonList, IonItem, IonLabel, IonRadioGroup, IonRadio } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonList, IonItem, IonLabel, IonButton, IonRadioGroup, IonRadio } from '@ionic/angular/standalone';
 import { MyData } from '../services/my-data';
 
 @Component({
@@ -9,13 +10,13 @@ import { MyData } from '../services/my-data';
   templateUrl: './settings.page.html',
   styleUrls: ['./settings.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, IonList, IonItem, IonLabel, IonRadioGroup, IonRadio, CommonModule, FormsModule]
+  imports: [IonContent, IonHeader, IonTitle, IonToolbar, IonList, IonItem, IonLabel, IonRadioGroup, IonRadio, IonButton, CommonModule, FormsModule]
 })
 export class SettingsPage implements OnInit {
 
   unitPreference: string = 'metric';
 
-  constructor(private myData: MyData) { }
+  constructor(private myData: MyData, private router: Router) { }
 
   async ngOnInit() {
     await this.loadPreference();
@@ -36,5 +37,10 @@ export class SettingsPage implements OnInit {
     this.unitPreference = value;
     await this.myData.set('unit-preferences', this.unitPreference);
   }
+
+  returnToHome() {
+    this.router.navigate(['/home']);
+  }
+
 
 }

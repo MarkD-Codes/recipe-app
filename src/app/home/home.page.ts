@@ -15,11 +15,16 @@ export class HomePage {
   Ingredients: string = '';
   searchedIngredients: string = '';
 
-  constructor(private myData: MyData) {}
+  constructor(private myData: MyData, private router: Router) {}
 
   async searchRecipesByIngredient() {
    await this.myData.set('ingredients', this.Ingredients);
    // only update the child input when the user presses Search
    this.searchedIngredients = this.Ingredients;
+  }
+
+  goToSettings() {
+    // Navigate to the settings page
+    this.router.navigate(['/settings']);
   }
 }

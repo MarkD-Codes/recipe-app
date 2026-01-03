@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle } from '@ionic/angular/standalone';
+import { Router } from '@angular/router';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonButton } from '@ionic/angular/standalone';
 import { HttpOptions } from '@capacitor/core';
 import { MyHttp } from '../services/my-http';
 import { MyData } from '../services/my-data';
@@ -11,7 +12,7 @@ import { MyData } from '../services/my-data';
   templateUrl: './recipe-details.page.html',
   styleUrls: ['./recipe-details.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle],
+  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonButton],
 })
 export class RecipeDetailsPage implements OnInit {
 
@@ -22,7 +23,7 @@ export class RecipeDetailsPage implements OnInit {
   recipeSteps!: any[];
   metric: boolean = true; // true = metric, false = imperial
 
-  constructor(private MyHttp: MyHttp, private MyData: MyData) { }
+  constructor(private MyHttp: MyHttp, private MyData: MyData, private router: Router) { }
 
   ngOnInit() {
     this.loadRecipeDetails();
@@ -56,4 +57,8 @@ export class RecipeDetailsPage implements OnInit {
         return true;
       }
     }
+
+    returnToHome() {
+    this.router.navigate(['/home']);
+  }
   }

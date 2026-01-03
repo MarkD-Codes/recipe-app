@@ -14,14 +14,19 @@
   <ion-list>
     <ion-radio-group [value]="unitPreference" (ionChange)="onPreferenceChange($event)">
       <ion-item>
-        <ion-label>Metric (kg, m, °C)</ion-label>
+        <ion-label>Metric (g and kg)</ion-label>
         <ion-radio slot="end" value="metric"></ion-radio>
       </ion-item>
       <ion-item>
-        <ion-label>Imperial (lb, ft, °F)</ion-label>
+        <ion-label>Imperial (lbs and ounces)</ion-label>
         <ion-radio slot="end" value="imperial"></ion-radio>
       </ion-item>
     </ion-radio-group>
   </ion-list>
 
+  <ion-content>
+    <ion-button (click)="returnToHome()">
+    Return to Home Page
+  </ion-button>
+  </ion-content>
 </ion-content>
