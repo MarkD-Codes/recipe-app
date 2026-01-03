@@ -7,7 +7,7 @@ import { CapacitorHttp, HttpOptions } from '@capacitor/core';
 export class MyHttp {
   constructor() {}
 
-  async getRecipes(options: HttpOptions){
+  async get(options: HttpOptions){
     console.log("HTTP GET URL: ", options.url);
     return await CapacitorHttp.get(options);
   }

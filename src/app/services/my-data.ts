@@ -20,7 +20,7 @@ export class MyData {
   }
 
   async get(key:string){
-    //gets a value by key from storage - in our case, a list of ingredients
+    //gets a value by key from storage
     return await this.storage.get(key);
   }
   

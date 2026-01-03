@@ -2,6 +2,7 @@ import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SimpleChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonCard, IonCardHeader, IonCardContent, IonCardTitle, IonButton } from '@ionic/angular/standalone';
 import { MyData } from '../services/my-data';
 import { MyHttp } from '../services/my-http';
@@ -17,14 +18,14 @@ import { HttpOptions } from '@capacitor/core';
 
 export class RecipesPage implements OnChanges {
 
-  @Input() ingredients: string = '';
+  @Input() ingredients: string = ''; // search input from Home page
   apiKey: string = '70759a4f7911402abcc53d3c51d3b759';
-  recipes!: any;
+  recipes!: any; //search results from API
 
   // base URL used to construct the request each time
-  baseUrl: string = "https://api.spoonacular.com/recipes/complexSearch?apiKey=" + this.apiKey + "&query=";
+  searchBaseUrl: string = "https://api.spoonacular.com/recipes/complexSearch?apiKey=" + this.apiKey + "&query=";
 
-  constructor(private myData: MyData, private MyHttp: MyHttp) { }
+  constructor(private myData: MyData, private MyHttp: MyHttp, private router: Router) { }
 
   async ngOnInit() {
     // If an ingredients value was stored previously, load it and fetch results
@@ -49,13 +50,14 @@ export class RecipesPage implements OnChanges {
 
     if (!this.ingredients) return; // nothing to search
 
-    const url = this.baseUrl + this.ingredients;
+    const url = this.searchBaseUrl + this.ingredients;
     const options: HttpOptions = { url };
-    let recipeResults = await this.MyHttp.getRecipes(options);
+    let recipeResults = await this.MyHttp.get(options);
     this.recipes = recipeResults.data.results;
   }
 
-
-
-
+  async storeRecipeID(recipeIDNumber: number) {
+    await this.myData.set('recipeIDNumber', recipeIDNumber);
+    this.router.navigate(['/recipe-details']);
+  }
 }

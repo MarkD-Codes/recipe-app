@@ -12,6 +12,6 @@
     <ion-card-header>
       <ion-card-title>{{ recipe.title }}</ion-card-title>
     </ion-card-header>
-    <ion-button fill="clear">Details</ion-button>
+    <ion-button fill="clear" (click)="storeRecipeID(recipe.id)">Details</ion-button>
   </ion-card>
 </ion-content>
