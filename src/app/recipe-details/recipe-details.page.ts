@@ -6,6 +6,7 @@ import { IonContent, IonHeader, IonTitle, IonToolbar, IonCard, IonCardContent, I
 import { HttpOptions } from '@capacitor/core';
 import { MyHttp } from '../services/my-http';
 import { MyData } from '../services/my-data';
+import { FavoritesService } from '../services/favorites-service';
 
 @Component({
   selector: 'app-recipe-details',
@@ -14,6 +15,7 @@ import { MyData } from '../services/my-data';
   standalone: true,
   imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonButton],
 })
+
 export class RecipeDetailsPage implements OnInit {
 
   detailsBaseUrl: string = "https://api.spoonacular.com/recipes/";
@@ -23,7 +25,7 @@ export class RecipeDetailsPage implements OnInit {
   recipeSteps!: any[];
   metric: boolean = true; // true = metric, false = imperial
 
-  constructor(private MyHttp: MyHttp, private MyData: MyData, private router: Router) { }
+  constructor(private MyHttp: MyHttp, private MyData: MyData, private router: Router, private fs: FavoritesService) { }
 
   ngOnInit() {
     this.loadRecipeDetails();
@@ -61,4 +63,20 @@ export class RecipeDetailsPage implements OnInit {
     returnToHome() {
     this.router.navigate(['/home']);
   }
-  }
+
+  async addToFavourites(){
+    let recipeID = await this.getRecipeIDNumber();
+    await this.fs.addToFavourites(recipeID);
+    }
+
+  async removeFromFavourites(){
+    let recipeID = await this.getRecipeIDNumber();
+    await this.fs.removeFromFavourites(recipeID);
+    }
+
+    async checkIfFavourite(): Promise<boolean> {
+      let recipeID = await this.getRecipeIDNumber();
+      return this.fs.checkIfFavourite(recipeID);
+    }
+
+}

@@ -4,6 +4,7 @@ import {  Router } from '@angular/router';
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonInput, IonButton, IonButtons, IonIcon } from '@ionic/angular/standalone';
 import { MyData } from '../services/my-data';
 import { RecipesPage } from '../recipes/recipes.page';
+import { FavoritesService } from '../services/favorites-service';
 
 @Component({
   selector: 'app-home',
@@ -14,8 +15,13 @@ import { RecipesPage } from '../recipes/recipes.page';
 export class HomePage {
   Ingredients: string = '';
   searchedIngredients: string = '';
+  favoriteRecipes: any[] = [];
 
-  constructor(private myData: MyData, private router: Router) {}
+  constructor(private myData: MyData, private router: Router, private favoritesService: FavoritesService) {}
+
+  ngOnInit() {
+    this.favoritesService.initializeFavourites();
+  }
 
   async searchRecipesByIngredient() {
    await this.myData.set('ingredients', this.Ingredients);
@@ -27,4 +33,10 @@ export class HomePage {
     // Navigate to the settings page
     this.router.navigate(['/settings']);
   }
+
+  goToFavorites() {
+    // Navigate to the favorites page
+    this.router.navigate(['/favourites']);
+  }
+
 }
