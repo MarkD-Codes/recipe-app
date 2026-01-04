@@ -40,4 +40,5 @@ export class FavoritesService {
     this.myData.set(this.key, []);
   }
 
+
 }

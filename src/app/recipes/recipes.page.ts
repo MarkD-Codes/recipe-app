@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { SimpleChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonCard, IonCardHeader, IonCardContent, IonCardTitle, IonButton } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonCard, IonCardHeader, IonCardTitle, IonButton } from '@ionic/angular/standalone';
 import { MyData } from '../services/my-data';
 import { MyHttp } from '../services/my-http';
 import { HttpOptions } from '@capacitor/core';
@@ -13,7 +13,7 @@ import { HttpOptions } from '@capacitor/core';
   templateUrl: './recipes.page.html',
   styleUrls: ['./recipes.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonCard, IonCardHeader, IonCardContent, IonCardTitle, IonButton],
+  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonCard, IonCardHeader, IonCardTitle, IonButton],
 })
 
 export class RecipesPage implements OnChanges {
@@ -55,8 +55,8 @@ export class RecipesPage implements OnChanges {
     let recipeResults = await this.MyHttp.get(options);
     this.recipes = recipeResults.data.results;
   }
-
-  async storeRecipeID(recipeIDNumber: number) {
+  //stores the selected recipe ID and navigates to the details page
+  async goToRecipe(recipeIDNumber: number) {
     await this.myData.set('recipeIDNumber', recipeIDNumber);
     this.router.navigate(['/recipe-details']);
   }

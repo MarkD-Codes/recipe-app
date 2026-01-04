@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonButton } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonButton, IonIcon } from '@ionic/angular/standalone';
 import { HttpOptions } from '@capacitor/core';
 import { MyHttp } from '../services/my-http';
 import { MyData } from '../services/my-data';
@@ -13,7 +13,7 @@ import { FavoritesService } from '../services/favorites-service';
   templateUrl: './recipe-details.page.html',
   styleUrls: ['./recipe-details.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonButton],
+  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonButton, IonIcon],
 })
 
 export class RecipeDetailsPage implements OnInit {
@@ -24,11 +24,16 @@ export class RecipeDetailsPage implements OnInit {
   recipeIngredients!: any[];
   recipeSteps!: any[];
   metric: boolean = true; // true = metric, false = imperial
+  isFavourite: boolean = false; 
 
   constructor(private MyHttp: MyHttp, private MyData: MyData, private router: Router, private fs: FavoritesService) { }
 
   ngOnInit() {
     this.loadRecipeDetails();
+  }
+
+  ngOnChanges(){
+    this.checkIfFavourite();
   }
 
   async getRecipeIDNumber(){
@@ -49,6 +54,13 @@ export class RecipeDetailsPage implements OnInit {
     async loadRecipeDetails() {
       let id = await this.getRecipeIDNumber();
       await this.getRecipeDetails(id);
+      this.isFavourite = await this.checkIfFavourite(); //should set isFavourite correctly for the current recipe
+    }
+
+    async checkIfFavourite(): Promise<boolean> {
+      let id = await this.MyData.get('recipeIDNumber');
+      let result = await this.fs.checkIfFavourite(id);
+      return result;
     }
 
     async checkUnitPreference(){
@@ -67,16 +79,13 @@ export class RecipeDetailsPage implements OnInit {
   async addToFavourites(){
     let recipeID = await this.getRecipeIDNumber();
     await this.fs.addToFavourites(recipeID);
+    this.isFavourite = true;
     }
 
   async removeFromFavourites(){
     let recipeID = await this.getRecipeIDNumber();
     await this.fs.removeFromFavourites(recipeID);
-    }
-
-    async checkIfFavourite(): Promise<boolean> {
-      let recipeID = await this.getRecipeIDNumber();
-      return this.fs.checkIfFavourite(recipeID);
+    this.isFavourite = false;
     }
 
 }
