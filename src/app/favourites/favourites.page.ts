@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonIcon, IonTitle, IonButtons, IonToolbar, IonCard, IonCardHeader, IonCardContent, IonCardSubtitle, IonCardTitle, IonList, IonButton } from '@ionic/angular/standalone';
@@ -15,7 +15,7 @@ import { FavoritesService } from '../services/favorites-service';
   standalone: true,
   imports: [IonContent, IonHeader, IonTitle, IonIcon, IonToolbar, IonButtons, IonCard, IonCardHeader, IonCardContent, IonCardSubtitle, IonCardTitle, IonList, IonButton, CommonModule, FormsModule]
 })
-export class FavouritesPage implements OnInit {
+export class FavouritesPage {
 
   constructor(private md: MyData, private mh: MyHttp, private router: Router, private fs: FavoritesService) { }
 
@@ -25,10 +25,6 @@ export class FavouritesPage implements OnInit {
 
   favouriteRecipesList: number[] = [];
   favouriteRecipes: any[] = [];
-
-  ngOnInit() {
-    this.loadFavouritesList();
-  }
 
   ionViewWillEnter() {
     this.loadFavouritesList(); //refresh the list when the view is about to enter

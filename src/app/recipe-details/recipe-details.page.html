@@ -21,14 +21,17 @@
   <ion-card-content>
     <h4>Ingredients List:</h4>
     <ion-card *ngFor="let ingredient of recipeIngredients">
-      {{ingredient.originalName}}:
-      {{ metric ? ingredient.measures.metric.amount + ' ' + ingredient.measures.metric.unitShort : ingredient.measures.us.amount + ' ' + ingredient.measures.us.unitShort }}
+      {{ metric ? ingredient.measures.metric.amount + ' ' + ingredient.measures.metric.unitLong : ingredient.measures.us.amount + ' ' + ingredient.measures.us.unitLong }}
+      {{ingredient.originalName}} 
+      <img src="https://img.spoonacular.com/ingredients_100x100/{{ingredient.image}}" style="width: 50px; height: auto;"/>
+        
     </ion-card>
   </ion-card-content>
 
   <ion-card-content>
     <h4>Method:</h4>
     <ion-card *ngFor="let step of recipeSteps">
+      Step {{step.number}}:
       {{step.step}}
     </ion-card>
   </ion-card-content>
