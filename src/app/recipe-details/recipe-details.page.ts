@@ -32,8 +32,8 @@ export class RecipeDetailsPage implements OnInit {
     this.loadRecipeDetails();
   }
 
-  ngOnChanges(){
-    this.checkIfFavourite();
+  ionViewWillEnter(){ // called each time the view is entered, 
+    this.loadRecipeDetails();
   }
 
   async getRecipeIDNumber(){
@@ -79,13 +79,17 @@ export class RecipeDetailsPage implements OnInit {
   async addToFavourites(){
     let recipeID = await this.getRecipeIDNumber();
     await this.fs.addToFavourites(recipeID);
-    this.isFavourite = true;
+    await this.updateIsFavourite();//ensure isFavourite is updated correctly
     }
 
   async removeFromFavourites(){
     let recipeID = await this.getRecipeIDNumber();
     await this.fs.removeFromFavourites(recipeID);
-    this.isFavourite = false;
+    await this.updateIsFavourite();//ensure isFavourite is updated correctly
+    }
+
+    async updateIsFavourite(){
+      this.isFavourite = await this.checkIfFavourite();
     }
 
 }
