@@ -1,22 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonCard, IonCardHeader, IonCardContent, IonCardSubtitle, IonCardTitle, IonList, IonButton } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonIcon, IonTitle, IonButtons, IonToolbar, IonCard, IonCardHeader, IonCardContent, IonCardSubtitle, IonCardTitle, IonList, IonButton } from '@ionic/angular/standalone';
 import { MyData } from '../services/my-data';
 import { MyHttp } from '../services/my-http';
 import { HttpOptions } from '@capacitor/core';
 import { Router } from '@angular/router';
+import { FavoritesService } from '../services/favorites-service';
 
 @Component({
   selector: 'app-favourites',
   templateUrl: './favourites.page.html',
   styleUrls: ['./favourites.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, IonCard, IonCardHeader, IonCardContent, IonCardSubtitle, IonCardTitle, IonList, IonButton, CommonModule, FormsModule]
+  imports: [IonContent, IonHeader, IonTitle, IonIcon, IonToolbar, IonButtons, IonCard, IonCardHeader, IonCardContent, IonCardSubtitle, IonCardTitle, IonList, IonButton, CommonModule, FormsModule]
 })
 export class FavouritesPage implements OnInit {
 
-  constructor(private md: MyData, private mh: MyHttp, private router: Router) { }
+  constructor(private md: MyData, private mh: MyHttp, private router: Router, private fs: FavoritesService) { }
 
   detailsBaseUrl: string = "https://api.spoonacular.com/recipes/";
   apiKey: string = '70759a4f7911402abcc53d3c51d3b759';
@@ -28,6 +29,10 @@ export class FavouritesPage implements OnInit {
   ngOnInit() {
     this.loadFavouritesList();
   }
+
+  ionViewWillEnter() {
+    this.loadFavouritesList(); //refresh the list when the view is about to enter
+  } 
 
   async loadFavouritesList() {
     const ids: number[] = (await this.md.get('favourite-recipes')) || [];
@@ -65,9 +70,14 @@ export class FavouritesPage implements OnInit {
     this.router.navigate(['/recipe-details']);
   }
 
+  returnToHome() {
+    this.router.navigate(['/home']);
+  }
 
-
-
+  async clearFavourites() {
+    await this.fs.clearFavourites();
+    this.returnToHome();
+  }
 
 
 }

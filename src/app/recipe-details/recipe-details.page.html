@@ -1,15 +1,15 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>RecipeDetails</ion-title>
+    <ion-buttons slot ="end"> 
+    <ion-button fill="clear" color="primary" (click)="returnToHome()">
+        <ion-icon slot="icon-only" name="home" color="primary" aria-label="Home"></ion-icon>
+      </ion-button>
+      </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-card>
-    <ion-toolbar>
-      <ion-title size="large">RecipeDetails</ion-title>
-    </ion-toolbar>
-  </ion-card>
 
 <ng-container *ngIf="recipeData">
 <ion-card>

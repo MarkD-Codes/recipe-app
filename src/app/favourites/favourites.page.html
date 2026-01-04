@@ -1,6 +1,17 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>Favourites</ion-title>
+    <ion-buttons slot ="end">
+      <ion-button color="warning" (click)="clearFavourites()">  
+        <ion-icon slot="start" name="warning" color="primary"></ion-icon>
+        Clear Favourites
+      </ion-button> 
+      
+      <ion-button fill="clear" color="primary" (click)="returnToHome()">
+        <ion-icon slot="icon-only" name="home" color="primary" aria-label="Home"></ion-icon>
+      </ion-button>
+      
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 

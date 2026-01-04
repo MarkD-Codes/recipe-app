@@ -7,7 +7,7 @@ import { MyData } from './my-data';
 export class FavoritesService {
   private key: string = 'favourite-recipes';
 
-  constructor(private myData: MyData) {}
+  constructor(private myData: MyData) { }
 
   async initializeFavourites() { 
     const favouritesExisting = await this.myData.get(this.key);
@@ -36,8 +36,8 @@ export class FavoritesService {
     return listOfFavorites.includes(recipeId);
   }
 
-  clearFavourites() {
-    this.myData.set(this.key, []);
+  async clearFavourites() {
+    await this.myData.set(this.key, []);
   }
 
 
